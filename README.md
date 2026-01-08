@@ -49,7 +49,7 @@ position: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 velocity: []
 effort: []
 ```
-# Transformtion from rgb and depth (extrinic transformation)
+# Transformation from rgb and depth (extrinic transformation)
 ```
 rosrun tf tf_echo rgb_camera_link depth_camera_link
 At time 0.000
@@ -58,6 +58,27 @@ At time 0.000
             in RPY (radian) [-0.102, -0.002, -0.003]
             in RPY (degree) [-5.862, -0.086, -0.152]
 ```
+# To take a look of the camera intrinsics
+## Find the camera_info topics
+```
+rostopic list | grep camera_info
+```
+You should see something like (names vary):
+
+.../rgb/camera_info
+
+.../depth/camera_info
+## Read one CameraInfo message
+```
+ rostopic echo -n i /rgb/camera_info
+```
+For computing the eye in hand calibration we will use the RGB intrinsics, then for computing the cloudpoint and surface, normal estimation we wil use the depth intrinsics
+So now you have:
+- fx, fy, cx, cy
+- distortion D
+- the exact topics used (RGB and/or depth)
+the camera TF frame (header.frame_id)
+
 # Eye-in-hand calibration
 With the help of OpenCV you need to compute the transformation between camera and end-effector first.
 ## Publish the camera frames 
