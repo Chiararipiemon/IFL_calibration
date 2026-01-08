@@ -87,4 +87,19 @@ You need to publish first the camera frames by launching the driver.launch file
 roslaunch --screen azure_kinect_ros_driver driver.launch
 ```
 ## Run the capture calibration node
-This rosnode is helpfull for capturiing the 17-20 robot poses samples
+This rosnode is helpfull for capturiing the 17-20 robot poses samples. NOTE: You need to select the right marker dictionary:
+like DICT_ARUCO_ORIGINAL
+```
+rosrun manual_handeye handeye_calibrate.py \
+  _image_topic:=/rgb/image_raw \
+  _info_topic:=/rgb/camera_info \
+  _base_frame:=iiwa_link_0 \
+  _ee_frame:=iiwa_link_ee \
+  _aruco_dict:=DICT_ARUCO_ORIGINAL \
+  _marker_id:=582 \
+  _marker_length_m:=0.04 \
+  _out_file:=/home/aorta-scan/auto_liver_ultrasound/catkin_ws/src/manual_handeye/handeye_samples.npz
+```
+screenshot of the GUI 
+As you can see, the marker is detected and now you can start to sample.
+
