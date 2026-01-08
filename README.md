@@ -27,7 +27,7 @@ At time 1767868134.414
 What I got is T(E-->B)
 2. Check if joint states exist
 ```
-rostopic echo -n 1 /ii/joint_states
+rostopic echo -n 1 /iiwa/joint_states
 ```
 I obtained:
 ```
