@@ -1,5 +1,5 @@
 # IFL_calibration
-## Prelminary checks:
+## Prelminary checks and the T E--> B from forward kinematics (tf live):
 After running roscore and starting the robot application
 1. Make sure you havr the URDF and the correct frme names. For example mine are:
   - base: iiwa_link_0 wich is equal to world
@@ -7,7 +7,7 @@ After running roscore and starting the robot application
 ```
 rosrun tf view_frames
 ```
-Then
+Then, to obtain **the transformations beetween ee and base for each robot new position**
 ```
 rosrun tf tf_echo iiwa_link_0 iiwa_link_ee
 ```
@@ -24,6 +24,7 @@ At time 1767868134.414
             in RPY (radian) [0.000, -0.000, -0.000]
             in RPY (degree) [0.000, -0.000, -0.000]
 ```
+What I got is T(E-->B)
 2. Check if joint states exist
 ```
 rostopic echo -n 1 /ii/joint_states
