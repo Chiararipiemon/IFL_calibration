@@ -50,3 +50,13 @@ velocity: []
 effort: []
 ```
 
+
+Transformtion from rgb and depth (extrinic transformation)
+```
+rosrun tf tf_echo rgb_camera_link depth_camera_link
+At time 0.000
+- Translation: [-0.032, -0.002, 0.004]
+- Rotation: in Quaternion [-0.051, -0.001, -0.001, 0.999]
+            in RPY (radian) [-0.102, -0.002, -0.003]
+            in RPY (degree) [-5.862, -0.086, -0.152]
+```
