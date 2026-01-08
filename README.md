@@ -49,9 +49,7 @@ position: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 velocity: []
 effort: []
 ```
-
-
-Transformtion from rgb and depth (extrinic transformation)
+# Transformtion from rgb and depth (extrinic transformation)
 ```
 rosrun tf tf_echo rgb_camera_link depth_camera_link
 At time 0.000
@@ -60,3 +58,12 @@ At time 0.000
             in RPY (radian) [-0.102, -0.002, -0.003]
             in RPY (degree) [-5.862, -0.086, -0.152]
 ```
+# Eye-in-hand calibration
+With the help of OpenCV you need to compute the transformation between camera and end-effector first.
+## Publish the camera frames 
+You need to publish first the camera frames by launching the driver.launch file
+```
+roslaunch --screen azure_kinect_ros_driver driver.launch
+```
+## Run the capture calibration node
+This rosnode is helpfull for capturiing the 17-20 robot poses samples
