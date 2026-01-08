@@ -7,7 +7,7 @@ After running roscore and starting the robot application
 ```
 rosrun tf view_frames
 ```
-Then, to obtain **the transformations beetween ee and base for each robot new position**
+Then, to obtain **the transformations FROM EE TO BASE for each robot new position**
 ```
 rosrun tf tf_echo iiwa_link_0 iiwa_link_ee
 ```
