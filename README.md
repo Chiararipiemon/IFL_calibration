@@ -166,6 +166,6 @@ You will get the number of samples you got, the name of the output file and for 
 ## Solve the equation AX = XB
 Run:
 ```
-rosrun manual_handeye haneye_solve.py
+rosrun manual_handeye handeye_solve.py --npz path+name.npz 
 ```
 Now you got the transformation you wanted.
