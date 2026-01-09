@@ -104,18 +104,28 @@ So now you have:
 - fx, fy, cx, cy
 - distortion D
 - the exact topics used (RGB and/or depth)
-the camera TF frame (header.frame_id)
+- the camera TF frame (header.frame_id)
 
 # Eye-in-hand calibration
+The goal of the eye-in-hand calibration is to estimate the rigid transform between the RGB camera frame and the robot end-effector frame.
+This transform is required to express visual measurements (e.g., ArUco pose, 3D points, surface normals) in robot coordinates and therefore enables vision-guided motion.
 With the help of OpenCV you need to compute the transformation between camera and end-effector first.
 ## Publish the camera frames 
-You need to publish first the camera frames by launching the driver.launch file
+First, launch the Azure Kinect driver to publish:
+- RGB images (/rgb/image_raw)
+- camera intrinsics (/rgb/camera_info)
+- camera TF frames (e.g. rgb_camera_link, depth_camera_link)
+You need to publish first the camera frames by launching the driver.launch file:
 ```
 roslaunch --screen azure_kinect_ros_driver driver.launch
 ```
 ## Run the capture calibration node
-This rosnode is helpfull for capturiing the 17-20 robot poses samples. NOTE: You need to select the right marker dictionary:
-like DICT_ARUCO_ORIGINAL
+A dedicated ROS node is used to collect 17–20 calibration samples.
+For each sample, the node records:
+- the robot FK transform from TF (iiwa_link_0 → iiwa_link_ee)
+- the marker pose estimated from the RGB image using OpenCV (PnP)
+
+**Important**: The ArUco marker dictionary and marker ID must match the printed marker. In our setup the correct dictionary is DICT_ARUCO_ORIGINAL, with marker id 582.
 ```
 rosrun manual_handeye handeye_calibrate.py \
   _image_topic:=/rgb/image_raw \
@@ -129,4 +139,8 @@ rosrun manual_handeye handeye_calibrate.py \
 ```
 screenshot of the GUI 
 As you can see, the marker is detected and now you can start to sample.
-
+The node opens a GUI window showing the RGB image and the detected marker.
+1. Move the robot to a pose where the marker is visible and the robot is static.
+2. When the marker is detected (axes are drawn), press s to save one sample.
+3. Repeat for ~20 diverse poses (especially varying orientation).
+4. Press q to exit and save the dataset.
