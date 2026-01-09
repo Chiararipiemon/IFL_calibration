@@ -10,7 +10,7 @@ First, set the naming convention of the coordinate frames
 - {T} = Tool (ultrasound probe TCP frame)
 
 ## First things to do
-1. start roscore
+1. Start roscore
 2. Run the visualization bridge between the real robot and the rviz gui. Spawn the robot and the connected frames.
     ```
     roslaunch iiwa_visualization display_robot.launch
@@ -30,18 +30,13 @@ The command to run and see the tf frames is:
 ```
 rosrun tf view_frames
 ```
-Then, to obtain **the transformations FROM EE TO BASE for each robot new position** (this is the forward kinematics)
+Then, to obtain **the transformations FROM EE TO BASE for each robot new position** (this is the **forward kinematics**)
 ```
 rosrun tf tf_echo iiwa_link_0 iiwa_link_ee
 ```
 And I obtined, for example:
 ```
 At time 1767868133.714
-- Translation: [-0.000, 0.000, 1.306]
-- Rotation: in Quaternion [0.000, -0.000, -0.000, 1.000]
-            in RPY (radian) [0.000, -0.000, -0.000]
-            in RPY (degree) [0.000, -0.000, -0.000]
-At time 1767868134.414
 - Translation: [-0.000, 0.000, 1.306]
 - Rotation: in Quaternion [0.000, -0.000, -0.000, 1.000]
             in RPY (radian) [0.000, -0.000, -0.000]
@@ -84,7 +79,8 @@ They include:
 - lens distortion parameters (radial/tangential or rational models)
 This is essential because most vision algorithms need a metric interpretation of pixels.
 
-**Camera extrinsics** are the rigid transform between the camera coordinate system and another reference frame (robot end-effector, robot base, world/table, etc.). They describe:
+**Camera extrinsics** are the rigid transform between the camera coordinate system and another reference frame (robot end-effector, robot base, world/table, etc.). 
+They describe:
 
 - the camera position (translation)
 - the camera orientation (rotation)
@@ -102,7 +98,7 @@ At time 0.000
 ```
 rostopic list | grep camera_info
 ```
-You should see something like (names vary):
+You should see something like:
 
 .../rgb/camera_info
 
@@ -138,7 +134,7 @@ First you need to activate the conda env to start to work with OpenCV. Of course
 ```
 conda activate auto_liver_ultrasound
 ```
-## Publish the camera frames 
+### Publish the camera frames 
 First, launch the Azure Kinect driver to publish:
 - RGB images (/rgb/image_raw)
 - camera intrinsics (/rgb/camera_info)
@@ -147,7 +143,7 @@ You need to publish first the camera frames by launching the driver.launch file:
 ```
 roslaunch --screen azure_kinect_ros_driver driver.launch
 ```
-## Run the capture calibration node
+### Run the capture calibration node
 A dedicated ROS node is used to collect 17–20 calibration samples.
 For each sample, the node records:
 - the robot FK transform from TF (iiwa_link_0 → iiwa_link_ee)
