@@ -1,13 +1,24 @@
 # IFL_calibration
-## Prelminary checks and the T E--> B from forward kinematics (tf live):
+The main goal of the calibration is to find the T matrix from camera frame to base frame. With the **eye-in-hand** calibration you will get the T matrix between camera frame and end-effector. It's also important to perform another type of calibration: the one from US imge coordintes to probe (tool) pyshical coordinates. After all these calibrations you can get the cloud point surface of the phantom, the local normals and start to control the robot.
+
+First, set the naming convention of the coordinate frames
+- {B} = Robot base frame (KUKA base), in the middle, not in the corner
+- {E} = Robot end-effector (as defined by KUKA kinematics)
+- {C} = Camera frame (Azure Kinect depth or color frame, choose one and be consistent)
+- {M} = ArUco marker frame (fixed on the table)
+- {P} = Phantom frame (optional)
+- {T} = Tool (ultrasound probe TCP frame)
+## Preliminary checks and get the T E--> B from forward kinematics (tf live):
 After running roscore and starting the robot application
-1. Make sure you havr the URDF and the correct frme names. For example mine are:
-  - base: iiwa_link_0 wich is equal to world
-  - ee: iiwa_link_ee wich is equal to tool0
+1. Make sure you have the URDF and the correct frme names. For example mine are:
+  - **base**: iiwa_link_0 wich is equal to world
+  - **ee**  : iiwa_link_ee wich is equal to tool0
+    
+The command to run and see the tf frames is:
 ```
 rosrun tf view_frames
 ```
-Then, to obtain **the transformations FROM EE TO BASE for each robot new position**
+Then, to obtain **the transformations FROM EE TO BASE for each robot new position** (this is the forward kinematics)
 ```
 rosrun tf tf_echo iiwa_link_0 iiwa_link_ee
 ```
@@ -27,7 +38,7 @@ At time 1767868134.414
 What I got is T(E-->B)
 2. Check if joint states exist
 ```
-rostopic echo -n 1 /ii/joint_states
+rostopic echo -n 1 /iiwa/joint_states
 ```
 I obtained:
 ```
@@ -49,7 +60,23 @@ position: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 velocity: []
 effort: []
 ```
-# Transformation from rgb and depth (extrinic transformation)
+It's all okay because all my joints were in in 0 position.
+# Camera entrinsics and intrinsics
+**Camera intrinsics** describe how the camera forms an image. They model the mapping between:
+- a 3D point in the camera coordinate frame (X,Y,Z)
+- its 2D pixel location (u,v) on the image.
+
+They include:
+- focal lengths fx,fy
+- principal point cx,cy​
+- lens distortion parameters (radial/tangential or rational models)
+This is essential because most vision algorithms need a metric interpretation of pixels.
+
+**Camera extrinsics** are the rigid transform between the camera coordinate system and another reference frame (robot end-effector, robot base, world/table, etc.). They describe:
+
+- the camera position (translation)
+- the camera orientation (rotation)
+## Transformation from rgb and depth (extrinic transformation)
 ```
 rosrun tf tf_echo rgb_camera_link depth_camera_link
 At time 0.000
