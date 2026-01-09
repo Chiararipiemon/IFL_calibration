@@ -117,6 +117,11 @@ So now you have:
 The goal of the eye-in-hand calibration is to estimate the rigid transform between the RGB camera frame and the robot end-effector frame.
 This transform is required to express visual measurements (e.g., ArUco pose, 3D points, surface normals) in robot coordinates and therefore enables vision-guided motion.
 With the help of OpenCV you need to compute the transformation between camera and end-effector first.
+## Conda activate 
+First you need to activate the conda env to start to work with OpenCV. Of course you env name will be differents from ours. Ours is auto_liver_ultrasound
+```
+conda activate auto_liver_ultrasound
+```
 ## Publish the camera frames 
 First, launch the Azure Kinect driver to publish:
 - RGB images (/rgb/image_raw)
