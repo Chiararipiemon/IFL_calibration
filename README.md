@@ -1,5 +1,5 @@
 # IFL_calibration
-The main goal of the calibration is to find the T matrix from camera frame to base frame. With the **eye-in-hand** calibration you will get the T matrix between camera frame and end-effector. It's also important to perform another type of calibration: the one from US imge coordintes to probe (tool) pyshical coordinates. After all these calibrations you can get the cloud point surface of the phantom, the local normals and start to control the robot.
+The main goal of the calibration is to find the T matrix from camera frame to base frame. With the **eye-in-hand** calibration you will get the T matrix between camera frame and end-effector (constant because the camera is rigidly mounted). It's also important to perform another type of calibration: the one from US imge coordintes to probe (tool) pyshical coordinates. After all these calibrations you can get the cloud point surface of the phantom, the local normals and start to control the robot.
 
 First, set the naming convention of the coordinate frames
 - {B} = Robot base frame (KUKA base), in the middle, not in the corner
