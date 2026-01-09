@@ -156,3 +156,16 @@ The node opens a GUI window showing the RGB image and the detected marker.
 2. When the marker is detected (axes are drawn), press s to save one sample.
 3. Repeat for ~20 diverse poses (especially varying orientation).
 4. Press q to exit and save the dataset.
+
+## See the saved results 
+```
+rosrun manual_handeye view_samples.py
+```
+You will get the number of samples you got, the name of the output file and for each samplet you took all the informations about the forwards kinematics and visual 
+
+## Solve the equation AX = XB
+Run:
+```
+rosrun manual_handeye haneye_solve.py
+```
+Now you got the transformation you wanted.
