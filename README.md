@@ -17,6 +17,7 @@ First, set the naming convention of the coordinate frames
     ```
 ## Preliminary checks and get the T E--> B from forward kinematics (tf live):
 After running roscore and starting the robot application, it's better to check first if everything it's ok.
+
 0. heck your rostopic list and see that the robot is in communication with your pc
 ```
 rostopic list
