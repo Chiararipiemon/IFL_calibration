@@ -116,8 +116,19 @@ So now you have:
 # Eye-in-hand calibration
 The goal of the eye-in-hand calibration is to estimate the rigid transform between the RGB camera frame and the robot end-effector frame.
 This transform is required to express visual measurements (e.g., ArUco pose, 3D points, surface normals) in robot coordinates and therefore enables vision-guided motion.
+We tried two methods:
+1. easy_hand_eye tool
+2. customized method that needs to be debugged but very helpfull for getting the T from E to B (forward kinematics) and T from M to C
+## Easy_hand_eye
+It's really simple to perform but the only outut that you have is ^E(T)C, not all the other matrix you need to get later to know ^B(T)M
+1. Run the tool in rviz env
+2. take 17-20 samples
+3. compute the calibration
+With this method is really important to start with a good starting pose, the robot should not be so stracthed, the marker should be well visible and, most important thing, each joint should be very far from joints limits. If not, you will get a warning and you can't start the calibration
+
+## Customized method
 With the help of OpenCV you need to compute the transformation between camera and end-effector first.
-## Conda activate 
+### Conda activate 
 First you need to activate the conda env to start to work with OpenCV. Of course you env name will be differents from ours. Ours is auto_liver_ultrasound
 ```
 conda activate auto_liver_ultrasound
