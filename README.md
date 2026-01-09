@@ -1,5 +1,5 @@
 # IFL_calibration
-The main goal of the calibration is to find the T matrix from camera frame to base frame. With the **eye-in-hand** calibration you will get the T matrix between camera frame and end-effector (constant because the camera is rigidly mounted). It's also important to perform another type of calibration: the one from US imge coordintes to probe (tool) pyshical coordinates. After all these calibrations you can get the cloud point surface of the phantom, the local normals and start to control the robot.
+The main goal of the calibration is to find the T matrix from camera frame to base frame.To obtain o, you need to perform first other calibrations. With the **eye-in-hand** calibration you will get the T matrix between camera frame and end-effector (constant because the camera is rigidly mounted). Then get the transformation between Marker and Base. It's also important to perform another type of calibration: the one from US imge coordintes to probe (tool) pyshical coordinates. After all these calibrations you can get the cloud point surface of the phantom, the local normals and start to control the robot.
 
 First, set the naming convention of the coordinate frames
 - {B} = Robot base frame (KUKA base), in the middle, not in the corner
@@ -10,13 +10,17 @@ First, set the naming convention of the coordinate frames
 - {T} = Tool (ultrasound probe TCP frame)
 
 ## First things to do
-1. Roscore
+1. start roscore
 2. Run the visualization bridge between the real robot and the rviz gui. Spawn the robot and the connected frames.
     ```
     roslaunch iiwa_visualization display_robot.launch
     ```
 ## Preliminary checks and get the T E--> B from forward kinematics (tf live):
-After running roscore and starting the robot application   
+After running roscore and starting the robot application, it's better to check first if everything it's ok.
+0. heck your rostopic list and see that the robot is in communication with your pc
+```
+rostopic list
+```
 1. Make sure you have the URDF and the correct frme names. For example mine are:
   - **base**: iiwa_link_0 wich is equal to world
   - **ee**  : iiwa_link_ee wich is equal to tool0
