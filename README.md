@@ -8,6 +8,13 @@ First, set the naming convention of the coordinate frames
 - {M} = ArUco marker frame (fixed on the table)
 - {P} = Phantom frame (optional)
 - {T} = Tool (ultrasound probe TCP frame)
+
+## First things to do
+1. Roscore
+2. Run the vsualization bridge between the real robot and the rviz gui. Spawn the robot and the connected frmes.
+    ```
+    roslaunch iiwa_visualization display_robot.launch
+    ```
 ## Preliminary checks and get the T E--> B from forward kinematics (tf live):
 After running roscore and starting the robot application
 1. Make sure you have the URDF and the correct frme names. For example mine are:
