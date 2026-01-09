@@ -11,12 +11,12 @@ First, set the naming convention of the coordinate frames
 
 ## First things to do
 1. Roscore
-2. Run the vsualization bridge between the real robot and the rviz gui. Spawn the robot and the connected frmes.
+2. Run the visualization bridge between the real robot and the rviz gui. Spawn the robot and the connected frames.
     ```
     roslaunch iiwa_visualization display_robot.launch
     ```
 ## Preliminary checks and get the T E--> B from forward kinematics (tf live):
-After running roscore and starting the robot application
+After running roscore and starting the robot application   
 1. Make sure you have the URDF and the correct frme names. For example mine are:
   - **base**: iiwa_link_0 wich is equal to world
   - **ee**  : iiwa_link_ee wich is equal to tool0
