@@ -15,14 +15,15 @@ First, set the naming convention of the coordinate frames
     ```
     roslaunch iiwa_visualization display_robot.launch
     ```
-    When you ouse the ***manual methond***it's better to run this launch file to visualize the real env also inside Rviz.
+    When you ose the ***manual methond*** to perform the eye in hand calibration it's better to run this launch file to visualize the real env also inside Rviz.
 ## Preliminary checks and get the T E--> B from forward kinematics (tf live):
 After running roscore and starting the robot application, it's better to check first if everything it's ok.
 
-0. heck your rostopic list and see that the robot is in communication with your pc
+0. Check your rostopic list and see that the robot is in communication with your pc
 ```
 rostopic list
 ```
+Sometimes it happens that your robot application is just not publishing things
 1. Make sure you have the URDF and the correct frme names. For example mine are:
   - **base**: iiwa_link_0 wich is equal to world
   - **ee**  : iiwa_link_ee wich is equal to tool0
@@ -35,6 +36,8 @@ Then, to obtain **the transformations FROM EE TO BASE for each robot new positio
 ```
 rosrun tf tf_echo iiwa_link_0 iiwa_link_ee
 ```
+<img width="503" height="403" alt="immagine" src="https://github.com/user-attachments/assets/c2138d91-fd38-472a-8e95-4c3f5226c35f" />
+
 And I obtined, for example:
 ```
 At time 1767868133.714
@@ -43,6 +46,7 @@ At time 1767868133.714
             in RPY (radian) [0.000, -0.000, -0.000]
             in RPY (degree) [0.000, -0.000, -0.000]
 ```
+
 What I got is T(E-->B)
 2. Check if joint states exist
 ```
@@ -85,6 +89,8 @@ They describe:
 
 - the camera position (translation)
 - the camera orientation (rotation)
+<img width="375" height="200" alt="immagine" src="https://github.com/user-attachments/assets/29ae817e-df5a-422d-937c-f6a0316ed80c" />
+
 ## Transformation from rgb and depth (extrinic transformation)
 ```
 rosrun tf tf_echo rgb_camera_link depth_camera_link
@@ -121,6 +127,8 @@ This transform is required to express visual measurements (e.g., ArUco pose, 3D 
 We tried two methods:
 1. easy_hand_eye tool
 2. customized method that needs to be debugged but very helpfull for getting the T from E to B (forward kinematics) and T from M to C
+<img width="465" height="344" alt="immagine" src="https://github.com/user-attachments/assets/6870db45-b250-442a-abd6-0906405f5cdc" />
+
 ## Easy_hand_eye
 It's really simple to perform but the only outut that you have is ^E(T)C, not all the other matrix you need to get later to know ^B(T)M
 1. Run the tool in rviz env
@@ -131,7 +139,7 @@ With this method is really important to start with a good starting pose, the rob
 ## Customized method
 With the help of OpenCV you need to compute the transformation between camera and end-effector first.
 ### Conda activate 
-First you need to activate the conda env to start to work with OpenCV. Of course you env name will be differents from ours. Ours is auto_liver_ultrasound
+First you need to activate the conda env to start to work with OpenCV. Of course you env name will be differents from ours. Ours is *auto_liver_ultrasound*
 ```
 conda activate auto_liver_ultrasound
 ```
