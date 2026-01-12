@@ -167,7 +167,7 @@ rosrun manual_handeye handeye_calibrate.py \
   _ee_frame:=iiwa_link_ee \
   _aruco_dict:=DICT_ARUCO_ORIGINAL \
   _marker_id:=582 \
-  _marker_length_m:=0.04 \
+  _marker_length_m:=0.1 \
   _out_file:=/home/aorta-scan/auto_liver_ultrasound/catkin_ws/src/manual_handeye/handeye_samples.npz
 ```
 screenshot of the GUI 
