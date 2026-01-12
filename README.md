@@ -198,3 +198,50 @@ Run:
 rosrun manual_handeye handeye_solve.py --npz path+name.npz 
 ```
 Now you got the transformation you wanted.
+# update 12 Jan
+With this orientation we verified that the aruco marker is in the right position and the depth_camera_link is well orientated accordin to azure kinect doc
+<img width="1219" height="531" alt="immagine" src="https://github.com/user-attachments/assets/fa59dfcc-0458-4922-83a9-9d4e7d84a26f" />
+
+<img width="433" height="504" alt="immagine" src="https://github.com/user-attachments/assets/821d8c6b-c023-4954-8820-f50c5dd61041" />
+we obtain this using this:
+parameters:
+  eye_on_hand: true
+  freehand_robot_movement: false
+  move_group: manipulator
+  move_group_namespace: /iiwa
+  namespace: /my_eob_calib_eye_on_hand/
+  robot_base_frame: iiwa_link_0
+  robot_effector_frame: iiwa_link_ee
+  tracking_base_frame: camera_base
+  tracking_marker_frame: aruco_marker_frame
+transformation:
+  qw: 0.49536501852079406
+  qx: -0.5062996220612471
+  qy: -0.49020138956534154
+  qz: -0.5079141549462273
+  x: -0.00398903371914086
+  y: 0.12771466475182422
+  z: 0.043316819292244395
+
+But unfortunately is not what we got as output, we needed to modify some signs but at least the values where not wrong
+Our starting matrix were:
+parameters:
+  eye_on_hand: true
+  freehand_robot_movement: false
+  move_group: manipulator
+  move_group_namespace: /iiwa
+  namespace: /my_eob_calib_eye_on_hand/
+  robot_base_frame: iiwa_link_0
+  robot_effector_frame: iiwa_link_ee
+  tracking_base_frame: camera_base
+  tracking_marker_frame: aruco_marker_frame
+transformation:
+  qw: 0.49536501852079406
+  qx: -0.5062996220612471
+  qy: -0.49020138956534154
+  qz: 0.5079141549462273
+  x: 0.00398903371914086
+  y: 0.12771466475182422
+  z: -0.043316819292244395
+
+
