@@ -204,6 +204,7 @@ With this orientation we verified that the aruco marker is in the right position
 
 <img width="433" height="504" alt="immagine" src="https://github.com/user-attachments/assets/821d8c6b-c023-4954-8820-f50c5dd61041" />
 we obtain this using this:
+```
 parameters:
   eye_on_hand: true
   freehand_robot_movement: false
@@ -222,9 +223,10 @@ transformation:
   x: -0.00398903371914086
   y: 0.12771466475182422
   z: 0.043316819292244395
-
+```
 But unfortunately is not what we got as output, we needed to modify some signs but at least the values where not wrong
 Our starting matrix were:
+```
 parameters:
   eye_on_hand: true
   freehand_robot_movement: false
@@ -243,5 +245,8 @@ transformation:
   x: 0.00398903371914086
   y: 0.12771466475182422
   z: -0.043316819292244395
+```
+with our matrix we have this:
+<img width="1459" height="476" alt="immagine" src="https://github.com/user-attachments/assets/6a43106d-6f41-4599-8861-1b3db6144054" />
 
 
