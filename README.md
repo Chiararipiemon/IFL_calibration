@@ -38,6 +38,10 @@ Then, to obtain **the transformations FROM EE TO BASE for each robot new positio
 ```
 rosrun tf tf_echo iiwa_link_0 iiwa_link_ee
 ```
+This is from base to ee:
+```
+rosrun tf tf_echo iiwa_link_ee iiwa_link_0
+```
 <img width="503" height="403" alt="immagine" src="https://github.com/user-attachments/assets/c2138d91-fd38-472a-8e95-4c3f5226c35f" />
 
 And I obtined, for example:
