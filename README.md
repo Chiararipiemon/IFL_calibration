@@ -1,5 +1,7 @@
 # IFL_calibration
 The main goal of the calibration is to find the T matrix from camera frame to base frame.To obtain so, you need to perform first other calibrations. With the **eye-in-hand** calibration you will get the T matrix between camera frame and end-effector (constant because the camera is rigidly mounted). Then it's also important to get the transformation between Marker and Base. It's also important to perform another type of calibration: the one from US imge coordintes to probe (tool) pyshical coordinates. After all these calibrations you can get the cloud point surface of the phantom, the local normals and start to control the robot.
+<img width="537" height="381" alt="immagine" src="https://github.com/user-attachments/assets/8522d908-554a-44a1-b533-b19d439c638b" />
+
 
 First, set the naming convention of the coordinate frames
 - {B} = Robot base frame (KUKA base), in the middle, not in the corner
@@ -15,7 +17,7 @@ First, set the naming convention of the coordinate frames
     ```
     roslaunch iiwa_visualization display_robot.launch
     ```
-    When you ose the ***manual methond*** to perform the eye in hand calibration it's better to run this launch file to visualize the real env also inside Rviz.
+When you ose the ***manual methond*** to perform the eye in hand calibration it's better to run this launch file to visualize the real env also inside Rviz.
 ## Preliminary checks and get the T E--> B from forward kinematics (tf live):
 After running roscore and starting the robot application, it's better to check first if everything it's ok.
 
@@ -130,11 +132,13 @@ We tried two methods:
 <img width="465" height="344" alt="immagine" src="https://github.com/user-attachments/assets/6870db45-b250-442a-abd6-0906405f5cdc" />
 
 ## Easy_hand_eye
-It's really simple to perform but the only outut that you have is ^E(T)C, not all the other matrix you need to get later to know ^B(T)M
+It's really simple to perform but the only outut that you have is ^C(T)E, not all the other matrix you need to get later to know ^B(T)M
 1. Run the tool in rviz env
 2. take 17-20 samples
 3. compute the calibration
-With this method is really important to start with a good starting pose, the robot should not be so stracthed, the marker should be well visible and, most important thing, each joint should be very far from joints limits. If not, you will get a warning and you can't start the calibration
+With this method is really important to start with a good starting pose, the robot should not be so stracthed, the marker should be well visible and, most important thing, each joint should be very far from joints limits. If not, you will get a warning and you can't start the calibration.
+**!!!!IMPORTANT!!!!**: with this method you will get the transformation from HAND (EE) to CAMERA --> *hand_camera*
+
 
 ## Customized method
 With the help of OpenCV you need to compute the transformation between camera and end-effector first.
