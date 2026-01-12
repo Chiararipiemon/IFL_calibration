@@ -204,6 +204,7 @@ With this orientation we verified that the aruco marker is in the right position
 
 <img width="433" height="504" alt="immagine" src="https://github.com/user-attachments/assets/821d8c6b-c023-4954-8820-f50c5dd61041" />
 we obtain this using this:
+
 ```
 parameters:
   eye_on_hand: true
