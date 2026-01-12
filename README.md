@@ -203,6 +203,7 @@ With this orientation we verified that the aruco marker is in the right position
 <img width="1219" height="531" alt="immagine" src="https://github.com/user-attachments/assets/fa59dfcc-0458-4922-83a9-9d4e7d84a26f" />
 
 <img width="433" height="504" alt="immagine" src="https://github.com/user-attachments/assets/821d8c6b-c023-4954-8820-f50c5dd61041" />
+
 we obtain this using this:
 
 ```
