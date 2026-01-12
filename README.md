@@ -34,11 +34,11 @@ The command to run and see the tf frames is:
 ```
 rosrun tf view_frames
 ```
-Then, to obtain **the transformations FROM EE TO BASE for each robot new position** (this is the **forward kinematics**)
+Then, to obtain **the transformations FROM EE TO BASE for each robot new position** (this is the **forward kinematics**). This one is the one used inside easy_handeye
 ```
 rosrun tf tf_echo iiwa_link_0 iiwa_link_ee
 ```
-This is from base to ee:
+This is **from base to ee**:
 ```
 rosrun tf tf_echo iiwa_link_ee iiwa_link_0
 ```
