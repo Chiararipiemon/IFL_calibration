@@ -4,6 +4,7 @@ The main goal of the calibration is to find the T matrix from camera frame to ba
 <img width="537" height="381" alt="immagine" src="https://github.com/user-attachments/assets/8522d908-554a-44a1-b533-b19d439c638b" />
 
 Referance link: https://docs.opencv.org/4.5.4/d9/d0c/group__calib3d.html#gaebfc1c9f7434196a374c382abf43439b
+
 First, set the naming convention of the coordinate frames
 - {B} = Robot base frame (KUKA base), in the middle, not in the corner
 - {E} = Robot end-effector (as defined by KUKA kinematics)
@@ -14,11 +15,8 @@ First, set the naming convention of the coordinate frames
 
 ## First things to do
 1. Start roscore
-2. Run the visualization bridge between the real robot and the rviz gui. Spawn the robot and the connected frames.
-    ```
-    roslaunch iiwa_visualization display_robot.launch
-    ```
-When you ose the ***manual methond*** to perform the eye in hand calibration it's better to run this launch file to visualize the real env also inside Rviz.
+2. Start the robot aplication
+
 ## Preliminary checks and get the T E--> B from forward kinematics (tf live):
 After running roscore and starting the robot application, it's better to check first if everything it's ok.
 
@@ -96,9 +94,10 @@ They describe:
 
 - the camera position (translation)
 - the camera orientation (rotation)
+
 <img width="375" height="200" alt="immagine" src="https://github.com/user-attachments/assets/29ae817e-df5a-422d-937c-f6a0316ed80c" />
 
-## Transformation from rgb and depth (extrinic transformation)
+## Transformation from rgb and depth 
 ```
 rosrun tf tf_echo rgb_camera_link depth_camera_link
 At time 0.000
@@ -108,6 +107,10 @@ At time 0.000
             in RPY (degree) [-5.862, -0.086, -0.152]
 ```
 # To take a look of the camera intrinsics
+This is optain using pnp solver:
+
+<img width="710" height="440" alt="immagine" src="https://github.com/user-attachments/assets/3c380c5c-a2aa-4d09-a693-3d5e70560c52" />
+
 ## Find the camera_info topics
 ```
 rostopic list | grep camera_info
@@ -129,83 +132,44 @@ So now you have:
 - the camera TF frame (header.frame_id)
 
 # Eye-in-hand calibration
-The goal of the eye-in-hand calibration is to estimate the rigid transform between the RGB camera frame and the robot end-effector frame.
+The goal of the eye-in-hand calibration is to estimate the rigid transform between the RGB camera frame and the robot end-effector frame. In particular: the trasnformation represents the pose of the camera base frame (tracking_base_frame = camera_base) with respect to the robot end-effector frame (robot_effector_frame = iiwa_link_ee).
+
+So it is the transform:
+
+<img width="171" height="40" alt="immagine" src="https://github.com/user-attachments/assets/37c182ed-ab97-46d9-95c4-5bec0d3522ea" />
+
+​
+Translation: [x,y,z] in meters, expressed in the iiwa_link_ee frame
+
+Rotation: quaternion (qx,qy,qz,qw) describing the rotation from iiwa_link_ee to camera_base
+
 This transform is required to express visual measurements (e.g., ArUco pose, 3D points, surface normals) in robot coordinates and therefore enables vision-guided motion.
-We tried two methods:
-1. easy_hand_eye tool
-2. customized method that needs to be debugged but very helpfull for getting the T from E to B (forward kinematics) and T from M to C
+
 <img width="465" height="344" alt="immagine" src="https://github.com/user-attachments/assets/6870db45-b250-442a-abd6-0906405f5cdc" />
 
 ## Easy_hand_eye
-It's really simple to perform but the only outut that you have is ^C(T)E, not all the other matrix you need to get later to know ^B(T)M
+It's really simple to perform but the only outut that you have is ^C(T)E:
 1. Run the tool in rviz env
-2. take 17-20 samples
-3. compute the calibration
+   
+```
+roslaunch easy_handeye calibrate_inside_moveit.launch
+```
+3. take 17-20 samples
+4. compute the calibration
+5. save the result
+6. publish the result inside Rviz
+   
+```
+roslaunch easy_handeye publish_inside_moveit.launch
+```
 With this method is really important to start with a good starting pose, the robot should not be so stracthed, the marker should be well visible and, most important thing, each joint should be very far from joints limits. If not, you will get a warning and you can't start the calibration.
 **!!!!IMPORTANT!!!!**: with this method you will get the transformation from HAND (EE) to CAMERA --> *hand_camera*
 
-
-## Customized method
-With the help of OpenCV you need to compute the transformation between camera and end-effector first.
-### Conda activate 
-First you need to activate the conda env to start to work with OpenCV. Of course you env name will be differents from ours. Ours is *auto_liver_ultrasound*
-```
-conda activate auto_liver_ultrasound
-```
-### Publish the camera frames 
-First, launch the Azure Kinect driver to publish:
-- RGB images (/rgb/image_raw)
-- camera intrinsics (/rgb/camera_info)
-- camera TF frames (e.g. rgb_camera_link, depth_camera_link)
-You need to publish first the camera frames by launching the driver.launch file:
-```
-roslaunch --screen azure_kinect_ros_driver driver.launch
-```
-### Run the capture calibration node
-A dedicated ROS node is used to collect 17–20 calibration samples.
-For each sample, the node records:
-- the robot FK transform from TF (iiwa_link_0 → iiwa_link_ee)
-- the marker pose estimated from the RGB image using OpenCV (PnP)
-
-**Important**: The ArUco marker dictionary and marker ID must match the printed marker. In our setup the correct dictionary is DICT_ARUCO_ORIGINAL, with marker id 582.
-```
-rosrun manual_handeye handeye_calibrate.py \
-  _image_topic:=/rgb/image_raw \
-  _info_topic:=/rgb/camera_info \
-  _base_frame:=iiwa_link_0 \
-  _ee_frame:=iiwa_link_ee \
-  _aruco_dict:=DICT_ARUCO_ORIGINAL \
-  _marker_id:=582 \
-  _marker_length_m:=0.1 \
-  _out_file:=/home/aorta-scan/auto_liver_ultrasound/catkin_ws/src/manual_handeye/handeye_samples.npz
-```
-screenshot of the GUI 
-As you can see, the marker is detected and now you can start to sample.
-The node opens a GUI window showing the RGB image and the detected marker.
-1. Move the robot to a pose where the marker is visible and the robot is static.
-2. When the marker is detected (axes are drawn), press s to save one sample.
-3. Repeat for ~20 diverse poses (especially varying orientation).
-4. Press q to exit and save the dataset.
-
-## See the saved results 
-```
-rosrun manual_handeye view_samples.py
-```
-You will get the number of samples you got, the name of the output file and for each samplet you took all the informations about the forwards kinematics and visual 
-
-## Solve the equation AX = XB
-Run:
-```
-rosrun manual_handeye handeye_solve.py --npz path+name.npz 
-```
-Now you got the transformation you wanted.
-# update 12 Jan
-With this orientation we verified that the aruco marker is in the right position and the depth_camera_link is well orientated accordin to azure kinect doc
 <img width="1219" height="531" alt="immagine" src="https://github.com/user-attachments/assets/fa59dfcc-0458-4922-83a9-9d4e7d84a26f" />
 
 <img width="433" height="504" alt="immagine" src="https://github.com/user-attachments/assets/821d8c6b-c023-4954-8820-f50c5dd61041" />
 
-we obtain this using this:
+we obtained this using this:
 
 ```
 parameters:
@@ -213,43 +177,17 @@ parameters:
   freehand_robot_movement: false
   move_group: manipulator
   move_group_namespace: /iiwa
-  namespace: /my_eob_calib_eye_on_hand/
+  namespace: /my_eih_calib_eye_on_hand/
   robot_base_frame: iiwa_link_0
   robot_effector_frame: iiwa_link_ee
   tracking_base_frame: camera_base
   tracking_marker_frame: aruco_marker_frame
 transformation:
-  qw: 0.49536501852079406
-  qx: -0.5062996220612471
-  qy: -0.49020138956534154
-  qz: -0.5079141549462273
-  x: -0.00398903371914086
-  y: 0.12771466475182422
-  z: 0.043316819292244395
+  qw: 0.4999110706628359
+  qx: -0.50621128609123011
+  qy: -0.49197077528942124
+  qz: -0.5018998403158033
+  x: 0.0011749601976121817
+  y: 0.11322924708755273
+  z: 0.021480657476985972
 ```
-But unfortunately is not what we got as output, we needed to modify some signs but at least the values where not wrong
-Our starting matrix were:
-```
-parameters:
-  eye_on_hand: true
-  freehand_robot_movement: false
-  move_group: manipulator
-  move_group_namespace: /iiwa
-  namespace: /my_eob_calib_eye_on_hand/
-  robot_base_frame: iiwa_link_0
-  robot_effector_frame: iiwa_link_ee
-  tracking_base_frame: camera_base
-  tracking_marker_frame: aruco_marker_frame
-transformation:
-  qw: 0.49536501852079406
-  qx: -0.5062996220612471
-  qy: -0.49020138956534154
-  qz: 0.5079141549462273
-  x: 0.00398903371914086
-  y: 0.12771466475182422
-  z: -0.043316819292244395
-```
-with our matrix we have this:
-<img width="1459" height="476" alt="immagine" src="https://github.com/user-attachments/assets/6a43106d-6f41-4599-8861-1b3db6144054" />
-
-
