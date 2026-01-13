@@ -3,6 +3,7 @@ The main goal of the calibration is to find the T matrix from camera frame to ba
 
 <img width="537" height="381" alt="immagine" src="https://github.com/user-attachments/assets/8522d908-554a-44a1-b533-b19d439c638b" />
 
+Referance link: https://docs.opencv.org/4.5.4/d9/d0c/group__calib3d.html#gaebfc1c9f7434196a374c382abf43439b
 First, set the naming convention of the coordinate frames
 - {B} = Robot base frame (KUKA base), in the middle, not in the corner
 - {E} = Robot end-effector (as defined by KUKA kinematics)
