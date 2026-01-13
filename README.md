@@ -148,6 +148,7 @@ This transform is required to express visual measurements (e.g., ArUco pose, 3D 
 <img width="465" height="344" alt="immagine" src="https://github.com/user-attachments/assets/6870db45-b250-442a-abd6-0906405f5cdc" />
 
 ## Easy_hand_eye
+### eye in hand
 It's really simple to perform but the only outut that you have is ^C(T)E:
 1. Run the tool in rviz env
    
@@ -164,8 +165,6 @@ roslaunch easy_handeye publish_inside_moveit.launch
 ```
 With this method is really important to start with a good starting pose, the robot should not be so stracthed, the marker should be well visible and, most important thing, each joint should be very far from joints limits. If not, you will get a warning and you can't start the calibration.
 **!!!!IMPORTANT!!!!**: with this method you will get the transformation from HAND (EE) to CAMERA --> *hand_camera*
-
-<img width="1219" height="531" alt="immagine" src="https://github.com/user-attachments/assets/fa59dfcc-0458-4922-83a9-9d4e7d84a26f" />
 
 <img width="433" height="504" alt="immagine" src="https://github.com/user-attachments/assets/821d8c6b-c023-4954-8820-f50c5dd61041" />
 
@@ -191,3 +190,4 @@ transformation:
   y: 0.11322924708755273
   z: 0.021480657476985972
 ```
+### eye on base
